@@ -50,6 +50,7 @@ class Translator {
     required Map<String, dynamic> toTranslate,
     required String source,
     required String target,
+    String? context,
     bool verbose = false,
   }) async {
     final translations = <String, String>{};
@@ -90,6 +91,7 @@ class Translator {
             target: target,
             apiKey: _apiKey,
             verbose: verbose,
+            context: context,
           );
           break;
       }
@@ -189,6 +191,7 @@ class Translator {
     required String source,
     required String target,
     required String apiKey,
+    String? context,
     bool verbose = false,
   }) async {
     final url = Uri.https('$_deepLSubdomain.$_deepLApiUrl', _deepLPath);
@@ -203,6 +206,7 @@ class Translator {
       'source_lang': source,
       'tag_handling': 'xml',
       'ignore_tags': ['x'],
+      'context': context,
     };
 
     Timer? timer;

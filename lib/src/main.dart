@@ -90,6 +90,17 @@ Map<String, dynamic> _mapConfigEntries(Iterable<MapEntry> entries) {
     );
     config['service'] = 'Google';
   }
+  if (config.containsKey('context')) {
+    if (config['service'].toLowerCase() != 'deepl') {
+      stdout.writeln(
+        '[context] is only supported with DeepL translator service. Ignoring this setting.',
+      );
+    } else {
+      stdout.writeln(
+        'Using provided [context] for translations with DeepL service.',
+      );
+    }
+  }
   config.putIfAbsent('key_file', () => _defaultKeyFile);
   return config;
 }
@@ -130,7 +141,7 @@ Future<void> _translate(Map<String, dynamic> config) async {
       templateFilename.indexOf('.arb'));
   final name = templateFilename.substring(0, templateFilename.lastIndexOf('_'));
 
-  final encoder = JsonEncoder.withIndent('    ');
+  final encoder = JsonEncoder.withIndent('  ');
 
   if (_verboseOutput) stdout.writeln('Looking for key file');
   if (!File(config['key_file']).existsSync()) {
@@ -391,6 +402,7 @@ Future<void> _translate(Map<String, dynamic> config) async {
       source: source,
       target: target,
       verbose: _verboseOutput,
+      context: config['context'] as String?,
     );
     for (var result in results.entries) {
       // results.updateAll((key, result) {
