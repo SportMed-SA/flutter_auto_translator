@@ -6,8 +6,11 @@ void main(List<String> arguments) {
   const version = '2.3.6';
   stdout.writeln('auto_translator v$version');
   stdout.writeln('═════════════════════');
-  runWithArguments(arguments).then((_) => exit(0)).catchError((error) {
+  runWithArguments(arguments)
+      .then((_) => exit(0))
+      .catchError((error, stackTrace) {
     stderr.writeln(error);
+    stderr.writeln(stackTrace);
     exit(1);
   });
 }
